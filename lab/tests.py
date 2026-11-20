@@ -1,4 +1,7 @@
+from io import StringIO
+
 from django.contrib.auth import get_user_model
+from django.core.management import call_command
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 from django.urls import reverse
@@ -39,6 +42,20 @@ class CenterWorkflowTests(TestCase):
         )
         OrderTest.objects.create(order=self.order, test=self.test)
         self.client.login(username="tech", password="safe-test-password")
+
+    def test_setup_command_does_not_merge_centers_with_same_name(self):
+        user_model = get_user_model()
+        first_owner = user_model.objects.create_user(username="owner-one", password="safe-test-password")
+        second_owner = user_model.objects.create_user(username="owner-two", password="safe-test-password")
+
+        call_command("setup_center", name="City Diagnostic Lab", username=first_owner.username, stdout=StringIO())
+        call_command("setup_center", name="City Diagnostic Lab", username=second_owner.username, stdout=StringIO())
+        call_command("setup_center", name="City Diagnostic Lab", username=first_owner.username, stdout=StringIO())
+
+        first_center = Membership.objects.get(user=first_owner).center
+        second_center = Membership.objects.get(user=second_owner).center
+        self.assertNotEqual(first_center.pk, second_center.pk)
+        self.assertEqual(Membership.objects.filter(user=first_owner).count(), 1)
 
     def test_patient_list_only_contains_selected_centers_patients(self):
         other_center = Center.objects.create(name="Other Demo Lab")
