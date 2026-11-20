@@ -22,7 +22,7 @@ py -3.13 -m venv .venv
 python -m pip install -r requirements.txt
 python manage.py migrate
 python manage.py createsuperuser
-python manage.py setup_center --name "Demo Diagnostic Center" --username <superuser>
+python manage.py setup_center --name "Demo Diagnostic Center" --username admin
 python manage.py runserver
 ```
 
