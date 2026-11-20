@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Sign in{% endblock %}
+{% block content %}
+<section class="auth-card">
+  <div class="eyebrow">WORKSPACE ACCESS</div>
+  <h1>Welcome back</h1>
+  <p class="muted">Sign in to your diagnostic center workspace.</p>
+  <form method="post" class="stack-form">
+    {% csrf_token %}
+    {% if form.non_field_errors %}<div class="form-errors">{{ form.non_field_errors }}</div>{% endif %}
+    <label for="{{ form.username.id_for_label }}">Username</label>
+    {{ form.username }}
+    {{ form.username.errors }}
+    <label for="{{ form.password.id_for_label }}">Password</label>
+    {{ form.password }}
+    {{ form.password.errors }}
+    <input type="hidden" name="next" value="{{ next }}">
+    <button class="button primary full" type="submit">Sign in</button>
+  </form>
+</section>
+{% endblock %}
