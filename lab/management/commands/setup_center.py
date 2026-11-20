@@ -18,7 +18,17 @@ class Command(BaseCommand):
         if user is None:
             raise CommandError(f"User {options['username']!r} does not exist. Create it first.")
 
-        center, created = Center.objects.get_or_create(name=options["name"])
+        membership = (
+            Membership.objects.filter(user=user, center__name=options["name"])
+            .select_related("center")
+            .first()
+        )
+        if membership:
+            center = membership.center
+            created = False
+        else:
+            center = Center.objects.create(name=options["name"])
+            created = True
         Membership.objects.update_or_create(
             user=user,
             center=center,
