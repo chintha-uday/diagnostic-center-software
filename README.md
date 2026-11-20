@@ -35,7 +35,7 @@ The same application supports both deployment models:
 - **Cloud SaaS:** set `DATABASE_URL` to a managed PostgreSQL database and deploy one application instance. Create a separate `Center` and membership for each customer.
 - **Single-center installation:** deploy the same container stack for one center and create one center membership. Its database and backups remain separate from other installations.
 
-Copy `.env.example` to `.env` for local container development. Start the stack with `docker compose up --build`; apply migrations with `docker compose exec web python manage.py migrate`. Before internet deployment, set `DEBUG=0`, a unique `SECRET_KEY`, the deployment's `ALLOWED_HOSTS`, and its `DATABASE_URL`, and put the app behind an HTTPS-terminating reverse proxy. Never commit `.env` or production credentials.
+Copy `.env.example` to `.env` for local container development. Start the stack with `docker compose up --build`; apply migrations with `docker compose exec web python manage.py migrate`. Static files are served by WhiteNoise. Before internet deployment, set `DEBUG=0`, a unique `SECRET_KEY`, the deployment's `ALLOWED_HOSTS`, and its `DATABASE_URL`, and put the app behind an HTTPS-terminating reverse proxy. Never commit `.env` or production credentials.
 
 The included Docker Compose database is suitable for development, not as a substitute for a production backup, monitoring, and recovery plan.
 
