@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}New test order{% endblock %}
+{% block content %}
+<section class="page-heading"><div><div class="eyebrow">LAB WORKFLOW</div><h1>New test order</h1><p class="muted">Choose a patient and one or more tests in this center's catalog.</p></div><a class="button ghost" href="{% url 'order_list' %}">Cancel</a></section>
+<section class="panel form-panel">
+  <form method="post" class="stack-form">
+    {% csrf_token %}
+    {% for field in form %}
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {{ field }}
+      {{ field.errors }}
+    {% endfor %}
+    <div class="form-actions"><button class="button primary" type="submit">Create order</button></div>
+  </form>
+</section>
+{% endblock %}

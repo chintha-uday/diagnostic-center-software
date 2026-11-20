@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Orders{% endblock %}
+{% block content %}
+<section class="page-heading">
+  <div><div class="eyebrow">LAB WORKFLOW</div><h1>Test orders</h1><p class="muted">Track samples, results, review, and release.</p></div>
+  <a class="button primary" href="{% url 'order_create' %}">＋ New test order</a>
+</section>
+<section class="panel">{% include "lab/order_table.html" with orders=orders %}</section>
+{% endblock %}
